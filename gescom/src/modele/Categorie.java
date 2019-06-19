@@ -15,6 +15,10 @@ public class Categorie {
     
     public Categorie() {
     }
+    
+        public Categorie(int idCat) {
+        this.idCat = idCat;
+    }
 
     public Categorie(int idCat, String libelle) {
         this.idCat = idCat;
@@ -50,8 +54,10 @@ public class Categorie {
         return "Categorie{" + "idCat=" + idCat + ", libelle=" + libelle + '}';
     }
 
-    public Categorie(int idCat) {
-        this.idCat = idCat;
+
+
+    Categorie getLibelle(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

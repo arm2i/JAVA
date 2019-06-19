@@ -6,6 +6,7 @@
 package gescom;
 
 import com.mysql.jdbc.Connection;
+
 import controleur.ControleurCategorie;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import modele.Categorie;
 import modele.CategorieDao;
+import modele.Produit;
+import modele.ProduitDao;
 
 /**
  *
@@ -47,7 +50,23 @@ public class Gescom {
          System.out.println(catDao.getOneCategorie(2));
 */
         
-        ControleurCategorie controleur = new ControleurCategorie();
+       //ControleurCategorie controleur = new ControleurCategorie();
+       
+      ProduitDao prodDao = new ProduitDao();
+      CategorieDao catDao = new CategorieDao();
+      List<Produit> list = prodDao.getAllProduit();
+          
+        for(Produit prod : list) {
+            System.out.println("IdProduit : " +prod.getIdProd()+ " Nom produit : " + prod.getNomProd() + " Catégorie: " +catDao.getOneCategorie(prod.getCatProd().getIdCat()).getLibelle());
+        }
+       
+        
+       
+        
+        
+        System.out.println("affichage 1 seul produit: " + prodDao.getOneProduit(1));
+    
+    
     }
 
    
