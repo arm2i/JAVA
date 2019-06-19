@@ -13,8 +13,9 @@ import java.util.List;
  */
 public interface ProduitInterface {
     public List<Produit> getAllProduit();
-    public Produit getOneProduit(int IdPro);
     public void addProduit(Produit prod);
     public void deleteProduit(Produit prod);
     public void updateProduit(Produit prod);
+    public Produit getOneProduit(int idProd);
+    
 }

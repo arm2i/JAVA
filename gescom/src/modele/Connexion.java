@@ -14,20 +14,20 @@ import java.sql.SQLException;
  * @author Formation
  */
 public class Connexion {
-    static Connection conex;
-    
+    static Connection conex;    
     static {
-    
-     try{
-             Class.forName("com.mysql.jdbc.Driver");
-            conex = DriverManager.getConnection("jdbc:mysql://localhost:3306/gescom","root", "");
-            System.out.println("Connectionn ok");
-                }catch(ClassNotFoundException | SQLException e){
-                System.out.println(e.getMessage());
-                }
-    
+         try{ 
+         Class.forName("com.mysql.jdbc.Driver");
+         String url = "jdbc:mysql://localhost:3306/gescom";
+         String user = "root";
+         String password="";
+         conex =DriverManager.getConnection(url,user, password);
+           System.out.println("Connexion ok");
+         
+       }catch(ClassNotFoundException | SQLException e){
+           System.out.println(e.getMessage());
+       }
     }
-    
     public static Connection getConnexion(){
         return conex;
     }

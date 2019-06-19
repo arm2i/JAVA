@@ -10,48 +10,37 @@ package modele;
  * @author Formation
  */
 public class Produit {
-     private int idProd;
-     private String nomProd;
-     private String descriptionProd;
-     private float prixProd;
-     private int qteProd;
-     private Categorie catProd;
+    private int idProd;
+    private String nomProd;
+    private String descriptionProd;
+    private double prixProd;
+    private int qteProd;
+    private Categorie catProd;
 
-     
-    public Produit() {
-        catProd = new Categorie();
+    @Override
+    public String toString() {
+        return "Produit{" + "idProd=" + idProd + ", nomProd=" + nomProd + ", descriptionProd=" + descriptionProd + ", prixProd=" + prixProd + ", qteProd=" + qteProd + ", catProd=" + catProd + '}';
     }
 
-    public Produit(int idPro) {
+    public Produit(int idProd, String nomProd, String descriptionProd, double prixProd, int qteProd, Categorie catProd) {
         this.idProd = idProd;
-    }
-
-    public Produit(int idPro, String nomProd, String descriptionProd, float prixProd, int qteProd) {
-        this.idProd  = idProd ;
         this.nomProd = nomProd;
         this.descriptionProd = descriptionProd;
         this.prixProd = prixProd;
         this.qteProd = qteProd;
         this.catProd = catProd;
-        
     }
 
-    public Categorie getCatProd() {
-        return catProd;
+    public Produit() {
+        catProd = new Categorie();
     }
 
-    public void setCatProd(Categorie catProd) {
-        this.catProd = catProd;
+    public int getIdProd() {
+        return idProd;
     }
 
-  
-
-    public int getIdProd () {
-        return idProd ;
-    }
-
-    public void setIdProd  (int idProd) {
-        this.idProd  = idProd ;
+    public void setIdProd(int idProd) {
+        this.idProd = idProd;
     }
 
     public String getNomProd() {
@@ -70,11 +59,11 @@ public class Produit {
         this.descriptionProd = descriptionProd;
     }
 
-    public float getPrixProd() {
+    public double getPrixProd() {
         return prixProd;
     }
 
-    public void setPrixProd(float prixProd) {
+    public void setPrixProd(double prixProd) {
         this.prixProd = prixProd;
     }
 
@@ -86,13 +75,13 @@ public class Produit {
         this.qteProd = qteProd;
     }
 
-    @Override
-    public String toString() {
-        return "Produit{" + "idPro=" + idProd + ", nomProd=" + nomProd + ", descriptionProd=" + descriptionProd + ", prixProd=" + prixProd + ", qteProd=" + qteProd + ", catProd=" + catProd + '}';
+    public Categorie getCatProd() {
+        return catProd;
     }
 
-   
-    
+    public void setCatProd(Categorie catProd) {
+        this.catProd = catProd;
+    }
     
     
     

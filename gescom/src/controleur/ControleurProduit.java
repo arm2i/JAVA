@@ -7,164 +7,99 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modele.Categorie;
 import modele.CategorieDao;
-import vue.CategorieVue;
-import vue.PrincipaleVue;
-
+import modele.Produit;
+import modele.ProduitDao;
+import vue.ProduitVue;
 
 /**
  *
  * @author Formation
  */
-public class ControleurCategorie implements ActionListener,MouseListener{
+public class ControleurProduit implements ActionListener{
+    private ProduitDao prodDao;
+    private ProduitVue prodVue;
     private CategorieDao catDao;
-    private CategorieVue catVue;
-    private DefaultTableModel modelCat;
-     private PrincipaleVue principaleVue;
+    private DefaultTableModel modelProd;
 
-    public ControleurCategorie() {
-        catVue = new CategorieVue();
+    public ControleurProduit() {
+        prodDao = new ProduitDao();
+        prodVue = new ProduitVue();
         catDao = new CategorieDao();
-        principaleVue = new PrincipaleVue();
-        init();
-        catVue.getBtnAjouter().addActionListener(this);
-        catVue.getBtnSupprimer().addActionListener(this);
-        catVue.getBtnModifier().addActionListener(this);
-        // ecouteur sur le tableau        
-        catVue.getListeTableau().addMouseListener(this);
-       
+        modelProd = new DefaultTableModel();   
         
-        principaleVue.setVisible(true);
-    
-    }
-    public ControleurCategorie(CategorieDao catDao, CategorieVue catVue) {
-        this.catDao = catDao;
-        this.catVue = catVue;
-
-    }
-
-    public ControleurCategorie(CategorieVue catVue) {
-        this.catVue = catVue;
-        this.catDao = new CategorieDao();
+        ajoutCategorie();
+        initModelProd();
+        addListerner();
+        prodVue.setVisible(true);
     }
     
-   
-    public void init(){
-           // création du modele cat
-        modelCat = new DefaultTableModel();
-        // Ajout de colonnes du model Cat
-        modelCat.addColumn("ID Catégorie");
-        modelCat.addColumn("Libellé");
-        
-        
-        //inserer les lignes dans le model cat
-        List<Categorie> allCat = this.catDao.getAllCategorie();
-        
-        for(Categorie cat : allCat){
-            modelCat.addRow(new Object[]{cat.getIdCat(),cat.getLibelle()});
+    public void addListerner(){
+        this.prodVue.getBtnAjouterProd().addActionListener(this);
+    }
+    /**
+     * Cette Méthode permet de charger le combobox avec la liste des 
+     * catégories de produit
+     */
+    public void ajoutCategorie(){
+        List<Categorie> listeCat = this.catDao.getAllCategorie();      
+        for(Categorie cat : listeCat){
+            this.prodVue.getComboCat().addItem(cat.getIdCat() +" "+ cat.getLibelle());
         }
-        catVue.getListeTableau().setModel(modelCat);
-        
-        
     }
-
+    /**
+     * Cette méthode récupère l'idCat dans la chaine de caractère formée de 
+     * idcat et du libelle
+     * @param chaine
+     * @return 
+     */
+    public int findIdCat(String chaine){
+        String [] tabIdCat = chaine.split(" ");  
+        return Integer.parseInt(tabIdCat[0]);
+    }
+    /**
+     * 
+     */
+    public void initModelProd(){
+          //création du modele catégorie
+        //Ajout des Colonnes du dodele Catégorie
+        modelProd.addColumn("ID Prod");
+        modelProd.addColumn("Nom");
+        modelProd.addColumn("Description");
+        modelProd.addColumn("Prix");
+        modelProd.addColumn("Qte");
+        modelProd.addColumn("Cat");
+        //inserer les lignes dans le medele cat
+        List<Produit> allProd = new ArrayList<>();
+        allProd = this.prodDao.getAllProduit();
+        
+        for (Produit prod : allProd) {
+            modelProd.addRow(new Object[]{prod.getIdProd(),
+                prod.getNomProd(),prod.getDescriptionProd(),prod.getPrixProd(),
+            prod.getQteProd(),prod.getCatProd().getIdCat()});
+        }
+        this.prodVue.getTableListeProd().setModel(modelProd);     
+    }
     @Override
-    public void actionPerformed(ActionEvent ae) {
-    
-        // BOUTON AJOUTER
-        if(ae.getSource().equals(this.catVue.getBtnAjouter())){
-            Categorie cat = new Categorie();
-            String champ = this.catVue.getTxtLibelle().getText();
-            if(champ.equals("")){JOptionPane.showMessageDialog(null,"Labelle vide");}
-            else{cat.setLibelle(this.catVue.getTxtLibelle().getText());
-            catDao.addCategorie(cat);
+    public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource().equals(this.prodVue.getBtnAjouterProd())){
+            Produit prod = new Produit();
+            prod.setNomProd(this.prodVue.getTxtNomProd().getText());
+            prod.setDescriptionProd(this.prodVue.getTxtDescriptionProd().getText());
+            prod.setPrixProd(Double.parseDouble(this.prodVue.getTxtPrixProd().getText()));           
+            prod.setQteProd(Integer.parseInt(this.prodVue.getTxtPrixProd().getText())); 
             
-            JOptionPane.showMessageDialog(null,"Enregistrement effectué avec succès");
-            // vider le champs libelle
-            this.catVue.getTxtLibelle().setText("");}
-            init();
-          }
-        
-        // BOUTON SUPPRIMER
-         if(ae.getSource().equals(this.catVue.getBtnSupprimer())){
-             //ecoute sur le tableau
-            catVue.getListeTableau().addMouseListener(this);
+            String chaine = this.prodVue.getComboCat().getSelectedItem().toString();
+            prod.setCatProd(new Categorie(findIdCat(chaine)));
             
-            Categorie cat = new Categorie();
-            int ligne=this.catVue.getListeTableau().getSelectedRow();
-            this.catVue.getTxtIdCat().setText(modelCat.getValueAt(ligne, 0).toString());
-            this.catVue.getTxtLibelle().setText(modelCat.getValueAt(ligne, 1).toString());
-            int idSelect = Integer.parseInt(modelCat.getValueAt(ligne, 0).toString());
-            cat.setIdCat(idSelect);
-            catDao.deleteCategorie(cat);
-            JOptionPane.showMessageDialog(null,"Catégorie id= "+idSelect+ "Supprimé!");
-                      
-            // vider le champs libelle
-            this.catVue.getTxtLibelle().setText("");
-            init();
-          }
-         
-         
-          // BOUTON MODIFIER
-         if(ae.getSource().equals(this.catVue.getBtnModifier())){
-             //ecoute sur le tableau
-                      
-            Categorie cat = new Categorie();
-            cat.setLibelle(this.catVue.getTxtLibelle().getText());
-            cat.setIdCat(Integer.parseInt(this.catVue.getTxtIdCat().getText()));
-            String champ = this.catVue.getTxtLibelle().getText();
-            if(champ.equals("")){
-                JOptionPane.showMessageDialog(null,"Labelle vide");
-                champ="";
-            }
-            else{catDao.updateCategorie(cat);
-            JOptionPane.showMessageDialog(null,"Labelle modifié ");}
-            
-            // vider le champs libelle
-            this.catVue.getTxtLibelle().setText("");
-            init();
-          }
-
-    // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent me) {
+            this.prodDao.addProduit(prod);
+        }
         
-        int ligne = this.catVue.getListeTableau().getSelectedRow();
-        this.catVue.getTxtIdCat().setText(modelCat.getValueAt(ligne, 0).toString());
-        this.catVue.getTxtLibelle().setText(modelCat.getValueAt(ligne, 1).toString());
-        
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent me) {
-      //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent me) {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent me) {
-     //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent me) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
-    
+           }
     
 }

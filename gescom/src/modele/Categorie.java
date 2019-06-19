@@ -12,25 +12,23 @@ package modele;
 public class Categorie {
     private int idCat;
     private String libelle;
-    
-    public Categorie() {
-    }
-    
-        public Categorie(int idCat) {
-        this.idCat = idCat;
-    }
 
     public Categorie(int idCat, String libelle) {
         this.idCat = idCat;
         this.libelle = libelle;
     }
 
-   
+    public Categorie(int idCat) {
+        this.idCat = idCat;
+    }
+
+    public Categorie(String libelle) {
+        this.libelle = libelle;
+    }
     
-    
-    
-    
-    
+
+    public Categorie() {
+    }
 
     public int getIdCat() {
         return idCat;
@@ -48,17 +46,9 @@ public class Categorie {
         this.libelle = libelle;
     }
 
-
-     @Override
+    @Override
     public String toString() {
         return "Categorie{" + "idCat=" + idCat + ", libelle=" + libelle + '}';
     }
-
-
-
-    Categorie getLibelle(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     
 }

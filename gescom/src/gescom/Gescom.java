@@ -5,12 +5,11 @@
  */
 package gescom;
 
-import com.mysql.jdbc.Connection;
-
 import controleur.ControleurCategorie;
+import controleur.ControleurProduit;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import modele.Categorie;
 import modele.CategorieDao;
@@ -26,48 +25,42 @@ public class Gescom {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args){
-        // TODO code application logic here
-       
-        /*   CategorieDao catDao = new CategorieDao();
+    public static void main(String[] args) throws SQLException {
+      
+        //ControleurCategorie controleur = new ControleurCategorie();
         
+        ControleurProduit controlProd = new ControleurProduit();
+        
+        
+        //ProduitDao prodDao = new ProduitDao();
+         
+        //Produit prod = new Produit(0,"Trois petits cochons","Livre Test",15.0,250,
+        //new Categorie(8));
+        
+        //prodDao.addProduit(prod);
+
+       // System.out.println(prodDao.getAllProduit());
+        // TODO code application logic here
+       /* CategorieDao catDao = new CategorieDao();
         List<Categorie> list = catDao.getAllCategorie();
         
-        for(Categorie cat : list) {
-            System.out.println("IdCat : " + cat.getIdCat() + " libella : " + cat.getLibelle());
+        for(Categorie cat : list){
+            System.out.println("IdCat : " + cat.getIdCat() + " libelle : " 
+                    + cat.getLibelle());
+        }
+        catDao.updateCategorie(new Categorie(3,"Vêtement"));
+        System.out.println("Après Update");
+        list = catDao.getAllCategorie();
+        
+        for(Categorie cat : list){
+            System.out.println("IdCat : " + cat.getIdCat() + " libelle : " 
+                    + cat.getLibelle());
         }
         
-        catDao.addCategorie(new Categorie(0,"CAT 1"));
+        System.out.println(catDao.getOneCategorie(2));*/
+        //catDao.addCategorie(new Categorie(0,"LIVRES"));
         
         //System.out.println(catDao.getAllCategorie());
-        
-        //catDao.deleteCategorie(new Categorie(12));
-       //  System.out.println(catDao.getAllCategorie());
-         
-        catDao.updateCategorie(new Categorie(3,"vetement"));
-         System.out.println(catDao.getAllCategorie());
-        
-         System.out.println(catDao.getOneCategorie(2));
-*/
-        
-       //ControleurCategorie controleur = new ControleurCategorie();
-       
-      ProduitDao prodDao = new ProduitDao();
-      CategorieDao catDao = new CategorieDao();
-      List<Produit> list = prodDao.getAllProduit();
-          
-        for(Produit prod : list) {
-            System.out.println("IdProduit : " +prod.getIdProd()+ " Nom produit : " + prod.getNomProd() + " Catégorie: " +catDao.getOneCategorie(prod.getCatProd().getIdCat()).getLibelle());
-        }
-       
-        
-       
-        
-        
-        System.out.println("affichage 1 seul produit: " + prodDao.getOneProduit(1));
-    
-    
     }
-
-   
+    
 }

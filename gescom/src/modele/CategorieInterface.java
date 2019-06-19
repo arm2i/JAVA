@@ -12,11 +12,11 @@ import java.util.List;
  * @author Formation
  */
 public interface CategorieInterface {
-    
     public List<Categorie> getAllCategorie();
-    public Categorie getOneCategorie(int IdCat);
+    public  Categorie getOneCategorie(int idCat);
     public void addCategorie(Categorie cat);
     public void deleteCategorie(Categorie cat);
     public void updateCategorie(Categorie cat);
+    
     
 }
