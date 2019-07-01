@@ -88,6 +88,7 @@ public class ControleurCategorie implements ActionListener, MouseListener {
 
         if (e.getSource().equals(this.catVue.getBtnAjouter())) {
             Categorie cat = new Categorie();
+            cat.setIdCat(Integer.parseInt(this.catVue.getTxtIdCat().getText()));
             cat.setLibelle(this.catVue.getTxtLibelle().getText());
 
             catDao.addCategorie(cat);

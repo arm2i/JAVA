@@ -31,6 +31,10 @@ public class Produit {
         this.catProd = catProd;
     }
 
+    public Produit(int idProd) {
+        this.idProd = idProd;
+    }
+
     public Produit() {
         catProd = new Categorie();
     }

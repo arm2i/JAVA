@@ -10,13 +10,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modele.Categorie;
 import modele.CategorieDao;
 import vue.CategorieVue;
-import vue.PrincipaleVue;
+//import vue.PrincipaleVue;
 
 /**
  *
@@ -26,13 +27,13 @@ public class ControleurCategorie implements ActionListener, MouseListener {
 
     private CategorieDao catDao;
     private CategorieVue catVue;
-    private PrincipaleVue principaleVue;
+    //private PrincipaleVue principaleVue;
     private DefaultTableModel modelCat;
 
     public ControleurCategorie() {
         catVue = new CategorieVue();
         catDao = new CategorieDao();
-        principaleVue = new PrincipaleVue();
+        //principaleVue = new PrincipaleVue();
 
         init();
         
@@ -42,9 +43,15 @@ public class ControleurCategorie implements ActionListener, MouseListener {
                 
         addListener();
         
-        principaleVue.setVisible(true);
-        //catVue.setVisible(true);
-
+        nextId();
+        //principaleVue.setVisible(true);
+        catVue.setVisible(true);
+    }
+    /**
+     * cette méthode met à jour le champs idCat avec l'id max +1 de la base
+     */
+    public void nextId(){
+         catVue.getTxtIdCat().setText(Integer.toString(maxId()+1));
     }
     public void addListener(){
         catVue.getBtnAjouter().addActionListener(this);
@@ -52,7 +59,7 @@ public class ControleurCategorie implements ActionListener, MouseListener {
         catVue.getBtnModifier().addActionListener(this);
         catVue.getBtnReset().addActionListener(this);
         catVue.getjTable1().addMouseListener(this); 
-        principaleVue.getMenuCat().addActionListener(this);
+       // principaleVue.getMenuCat().addActionListener(this);
     }
 
     public ControleurCategorie(CategorieDao catDao, CategorieVue catVue) {
@@ -88,6 +95,7 @@ public class ControleurCategorie implements ActionListener, MouseListener {
 
         if (e.getSource().equals(this.catVue.getBtnAjouter())) {
             Categorie cat = new Categorie();
+            cat.setIdCat(Integer.parseInt(this.catVue.getTxtIdCat().getText()));
             cat.setLibelle(this.catVue.getTxtLibelle().getText());
 
             catDao.addCategorie(cat);
@@ -95,6 +103,7 @@ public class ControleurCategorie implements ActionListener, MouseListener {
             JOptionPane.showMessageDialog(null, "Enregistrement effectué avec succès");
             //vider le champs libelle
             this.catVue.getTxtLibelle().setText("");
+            nextId();
             init();
         }
         if (e.getSource().equals(this.catVue.getBtnSupprimer())) {
@@ -104,6 +113,7 @@ public class ControleurCategorie implements ActionListener, MouseListener {
             JOptionPane.showMessageDialog(null, "opération effectuée avec succès");
             //vider le champs libelle
             this.catVue.getTxtLibelle().setText("");
+            nextId();
             init();
         }
         if (e.getSource().equals(this.catVue.getBtnModifier())) {
@@ -114,6 +124,7 @@ public class ControleurCategorie implements ActionListener, MouseListener {
             JOptionPane.showMessageDialog(null, "opération effectuée avec succès");
             //vider le champs libelle
             this.catVue.getTxtLibelle().setText("");
+            nextId();
             init();
         }
         if (e.getSource().equals(this.catVue.getBtnReset())) {
@@ -122,10 +133,9 @@ public class ControleurCategorie implements ActionListener, MouseListener {
             catVue.getBtnSupprimer().setEnabled(false);
             catVue.getTxtIdCat().setText("");
             catVue.getTxtLibelle().setText("");
+           nextId();
         }
-        if(e.getSource().equals(this.principaleVue.getMenuCat())){
-            this.catVue.setVisible(true);
-        }
+
 
 // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -162,6 +172,22 @@ public class ControleurCategorie implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    /**
+     * cette méthode retourne l'id max de la collection Catégorie
+     * @return 
+     */
+    public int maxId(){
+        List<Categorie> listeCat = this.catDao.getAllCategorie();
+        List<Integer> listeId = new ArrayList<>();
+        
+        for(Categorie cat : listeCat){
+            listeId.add(cat.getIdCat());
+        }
+        if(listeId.isEmpty()){
+            listeId.add(0);
+        }
+        return Collections.max(listeId);
     }
 
 }

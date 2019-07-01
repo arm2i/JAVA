@@ -337,6 +337,7 @@ public class CategorieVue extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CategorieVue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
